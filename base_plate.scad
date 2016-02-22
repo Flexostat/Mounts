@@ -4,6 +4,7 @@ mount_type = "stepper";
 num_chambers = 8;
 height = 4;
 min_width = height;
+corner_radius = 10;
 
 /// derived
 width = max((18/8)*num_chambers,min_width);
@@ -15,7 +16,7 @@ $fn = 30;
 
 //translate([1/2*intomm,1/2*intomm])
 difference(){
-  square([width,height]*intomm);
+  rsquare([width,height]*intomm,corner_radius);
   for(xof = [width/num_chambers/2*intomm:width/num_chambers*intomm:width*intomm]) {
   	translate([xof,height/2*intomm])
     mount_holes(mount_type);
@@ -30,6 +31,18 @@ module mount_holes(type="fan") {
       echo(xx);
       translate([xx,yy])
       circle(d=0.1495*intomm);
+    }
+  }
+}
+
+
+module rsquare(xy,r) {
+  hull() {
+    for (xx = [r,xy[0]-r]) {
+      for (yy = [r,xy[1]-r]) {
+        translate([xx, yy])
+          circle(r);
+      }
     }
   }
 }
